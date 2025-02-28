@@ -1,0 +1,212 @@
+/* styles.css */
+
+/* 基本スタイル（PC優先デザイン） */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background-color: #000;
+    color: #fff;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1540px;
+    max-width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    max-height: 25px;
+    margin-right: 16px;
+}
+
+.header-search input {
+    padding: 5px;
+    width: 300px;
+}
+
+.logout-btn {
+    margin-left: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.mypage-btn {
+    margin-left: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+}
+
+.header-btn {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+.main {
+    padding: 100px 24px;
+}
+
+.main-title {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.profile-form {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.avatar-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    padding: 20px 20px;
+}
+
+.avatar {
+    width: 150px;
+    height: 150px;
+    background-color: #ddd;
+    border-radius: 50%;
+    margin-right: 100px;
+}
+
+.avatar-btn {
+    padding: 5px 10px;
+    font-size: 15px;
+    font-weight: bold;
+    background-color: #fff;
+    color: #ff6f61;
+    border: none;
+    border-radius: 5px;
+    border: 2px solid #ff6f61;
+    cursor: pointer;
+}
+
+.avatar-btn:hover {
+    background-color: #0056b3;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    background-color: #f95f5f;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #e14a4a;
+}
+
+/* レスポンシブ対応 */
+
+/* タブレット（768px-850px） */
+@media (min-width: 768px) and (max-width: 850px) {
+    .main {
+        padding: 24px;
+    }
+
+    .profile-form {
+        max-width: 400px;
+    }
+
+    .main-title {
+        font-size: 22px;
+    }
+
+    .input {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .avatar {
+        width: 80px;
+        height: 80px;
+    }
+
+    .avatar-btn {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+}
+
+/* PC（1400px-1540px） */
+@media (min-width: 1400px) and (max-width: 1540px) {
+    .main-title {
+        font-size: 26px;
+    }
+
+    .profile-form {
+        max-width: 600px;
+    }
+
+    .input {
+        font-size: 18px;
+        padding: 12px;
+    }
+
+    .button {
+        font-size: 18px;
+        padding: 14px;
+    }
+
+    .avatar {
+        width: 120px;
+        height: 120px;
+    }
+
+    .avatar-btn {
+        font-size: 16px;
+        padding: 10px 16px;
+    }
+}
