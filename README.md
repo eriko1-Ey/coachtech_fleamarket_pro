@@ -16,10 +16,10 @@ mysql:
     
 【Laravel環境構築】
 
-1.　docker　compose exec php bash
-2.　composer install
-3.　「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.envファイルを作成
-4.　.envに以下の環境変数に編集する
+1.　docker　compose exec php bashを実行する。
+2.　composer installを実行する。
+3.　cp .env.example .envを実行する。（実行後、exitでphpコンテナを抜ける）
+4.　.envに以下の環境変数に編集する。
 　　　DB_CONNECTION=mysql
 　　　DB_HOST=mysql
 　　　DB_PORT=3306
@@ -27,17 +27,21 @@ mysql:
 　　　DB_USERNAME=laravel_user
 　　　DB_PASSWORD=laravel_pass
    
-5.　アプリケーションキーの作成
+5.　アプリケーションキーの作成(phpコンテナ内）
 　　php artisan key:generate
   
-6.　マイグレーションの実行
+6.　マイグレーションの実行(phpコンテナ内）
 　　php artisan migrate
   
-7.　シーディングの実行
+7.　シーディングの実行(phpコンテナ内）
 　　php artisan db:seed
 
 8.　シンボリックリンクの作成
 　　php artisan storage/link
+  ※失敗した場合は、下記を実行する。
+  cd src/publilc
+  unlink storage
+  ln -s ../storage/app/public storage
 
 【使用技術(実行環境)】
 ・php 8.0 ・laravel 8 ・MySQL 8.0
