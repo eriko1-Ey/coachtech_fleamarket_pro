@@ -34,27 +34,55 @@ body {
     width: 300px;
 }
 
-.logout-btn {
-    margin-left: 10px;
-    color: #fff;
-    text-decoration: none;
-    font-size: 15px;
+.header-links {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* ボタン間の余白 */
 }
 
-.mypage-btn {
-    margin-left: 10px;
-    color: #fff;
-    text-decoration: none;
-    font-size: 15px;
+/* ログアウトボタンのフォームを横並びに */
+.header-links form {
+    display: inline-block;
+    margin: 0; /* フォームの余白をなくす */
 }
 
+.logout-btn,
+.mypage-btn,
 .header-btn {
-    margin-left: 10px;
-    padding: 5px 10px;
-    background-color: #fff;
-    color: #000;
+    padding: 8px 15px;
     border-radius: 5px;
     text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* ログアウトボタン（黒背景・白文字） */
+.logout-btn {
+    background-color: transparent;
+    color: #fff;
+    border: none;
+}
+
+/* マイページボタン（黒背景・白文字） */
+.mypage-btn {
+    background-color: transparent;
+    color: #fff;
+}
+
+/* 出品ボタン（白背景・黒文字） */
+.header-btn {
+    background-color: #fff;
+    color: #000;
+}
+
+/* ホバー時のスタイル */
+.logout-btn:hover,
+.mypage-btn:hover {
+    text-decoration: underline;
+}
+
+.header-btn:hover {
+    background-color: #ddd;
 }
 
 /*main設定*/
@@ -76,19 +104,47 @@ h1 {
 }
 
 .image-upload {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* デフォルトは縦並び */
     padding: 20px;
     border: 2px dashed #ccc;
     border-radius: 5px;
+    width: 200px;
+    height: 200px;
+    text-align: center;
+}
+
+.image-upload.has-image {
+    flex-direction: row;
+    width: auto;
+    height: auto;
 }
 
 .upload-btn {
     background-color: #ff6f61;
     color: #fff;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    font-size: 16px;
     cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.image-preview-container {
+    display: none;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    margin-right: 10px; /* ボタンとの間隔 */
+}
+
+#preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .preview-container {
@@ -177,26 +233,64 @@ h1 {
 
 /* レスポンシブ対応 */
 /*タブレット対応*/
-@media screen and (max-width: 850px) {
+@media (min-width: 768px) and (max-width: 850px) {
+    /* ✅ ヘッダー全体を横並びに */
+    .header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        text-align: center;
+        padding: 10px 16px;
+        width: 100%;
+    }
+
+    /* ✅ ロゴのサイズ調整 */
     .logo {
-        max-height: 15px;
+        max-height: 22px; /* ✅ サイズを少し大きく */
         margin-right: 10px;
     }
 
+    /* ✅ 検索バーのサイズ調整 */
+    .header-search {
+        flex-grow: 1;
+        margin: 0 10px;
+    }
+
     .header-search input {
-        width: 200px;
+        width: 100%;
+        max-width: 250px;
+        padding: 6px;
+        font-size: 14px;
     }
 
-    .main-container {
-        padding: 15px;
+    /* ✅ ボタン類を横並びに */
+    .header-links {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
     }
 
-    .categories {
-        flex-direction: column;
+    .header-links form,
+    .header-links a {
+        flex: 1;
+        text-align: center;
     }
 
-    .submit-btn {
-        font-size: 0.9em;
-        padding: 10px;
+    .logout-btn,
+    .login-btn,
+    .mypage-btn,
+    .header-btn {
+        width: auto;
+        min-width: 80px; /* ✅ 幅を確保 */
+        padding: 6px 12px; /* ✅ パディングを調整 */
+        font-size: 14px; /* ✅ 文字サイズを調整 */
+        white-space: nowrap; /* ✅ 折り返し防止 */
+    }
+
+    /* ✅ メインコンテンツのパディング調整 */
+    .main {
+        padding-top: 80px; /* ✅ ヘッダーとの間隔を確保 */
     }
 }

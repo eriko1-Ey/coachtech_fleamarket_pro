@@ -5,13 +5,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>購入画面 | COACHTECH</title>
-    <link rel="stylesheet" href="{{asset('css/purchase.css')}}" />
+    <link rel="stylesheet" href="{{ asset('css/purchase.css') }}?v={{ time() }}" />
     <link rel="stylesheet" href="{{asset('css/sanitize.css')}}" />
 </head>
 
 <body>
     <header class="header">
-        <img src="{{asset('storage/logo.svg')}}" alt="COACHTECHロゴ" class="logo" />
+        <a href="{{ route('index') }}">
+            <img src="{{asset('storage/logo.svg')}}" alt="COACHTECHロゴ" class="logo" />
+        </a>
         <div class="header-search">
             <input type="text" placeholder="なにをお探しですか？" />
         </div>
@@ -52,7 +54,7 @@
                         <section class="delivery-address">
                             <h2>配送先</h2>
                             <p>〒{{ $user->post_code }}<br>{{ $user->address }} {{ $user->building }}</p>
-                            <a href="{{ route('updateAddress') }}" class="change-link">変更する</a>
+                            <a href="{{ route('editAddress', ['product_id' => $product->id]) }}" class="change-link">変更する</a>
                         </section>
                 </div>
                 <div class="right-section">

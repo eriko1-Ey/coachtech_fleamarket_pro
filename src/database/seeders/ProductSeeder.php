@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\User;
+use App\Models\Category;
 
 class ProductSeeder extends Seeder
 {
@@ -29,6 +30,7 @@ class ProductSeeder extends Seeder
                 'condition' => '良好',
                 'brand' => 'Armani',
                 'image' => 'Armani+Mens+Clock.jpg',
+                'category' => 'メンズ',
             ],
             [
                 'name' => 'HDD',
@@ -37,6 +39,7 @@ class ProductSeeder extends Seeder
                 'condition' => '目立った傷や汚れなし',
                 'brand' => '',
                 'image' => 'HDD+Hard+Disk.jpg',
+                'category' => '家電',
             ],
             [
                 'name' => '玉ねぎ3束',
@@ -45,6 +48,7 @@ class ProductSeeder extends Seeder
                 'condition' => 'やや傷や汚れあり',
                 'brand' => '',
                 'image' => 'iLoveIMG+d.jpg',
+                'category' => 'キッチン',
             ],
             [
                 'name' => '革靴',
@@ -53,6 +57,7 @@ class ProductSeeder extends Seeder
                 'condition' => '状態が悪い',
                 'brand' => '',
                 'image' => 'Leather+Shoes+Product+Photo.jpg',
+                'category' => 'メンズ',
             ],
             [
                 'name' => 'ノートPC',
@@ -61,6 +66,7 @@ class ProductSeeder extends Seeder
                 'condition' => '良好',
                 'brand' => '',
                 'image' => 'Living+Room+Laptop.jpg',
+                'category' => '家電',
             ],
             [
                 'name' => 'マイク',
@@ -69,6 +75,7 @@ class ProductSeeder extends Seeder
                 'condition' => '目立った傷や汚れなし',
                 'brand' => '',
                 'image' => 'Music+Mic+4632231.jpg',
+                'category' => '家電',
             ],
             [
                 'name' => 'ショルダーバッグ',
@@ -77,6 +84,7 @@ class ProductSeeder extends Seeder
                 'condition' => 'やや傷や汚れあり',
                 'brand' => '',
                 'image' => 'Purse+fashion+pocket.jpg',
+                'category' => 'ファッション',
             ],
             [
                 'name' => 'タンブラー',
@@ -85,6 +93,7 @@ class ProductSeeder extends Seeder
                 'condition' => '状態が悪い',
                 'brand' => '',
                 'image' => 'Tumbler+souvenir.jpg',
+                'category' => 'キッチン',
             ],
             [
                 'name' => 'コーヒーミル',
@@ -93,6 +102,7 @@ class ProductSeeder extends Seeder
                 'condition' => '良好',
                 'brand' => '',
                 'image' => 'Waitress+with+Coffee+Grinder.jpg',
+                'category' => 'キッチン',
             ],
             [
                 'name' => 'メイクセット',
@@ -101,6 +111,7 @@ class ProductSeeder extends Seeder
                 'condition' => '目立った傷や汚れなし',
                 'brand' => '',
                 'image' => 'makeupset.jpg',
+                'category' => 'コスメ',
             ],
         ];
 
@@ -108,6 +119,7 @@ class ProductSeeder extends Seeder
             // ✅ 仮のユーザーを順番に割り当てる
             $user = $users[$index % $users->count()];
 
+            // ✅ 商品を作成
             $product = Product::create([
                 'user_id' => $user->id,
                 'name' => $productData['name'],
@@ -118,10 +130,19 @@ class ProductSeeder extends Seeder
                 'brand' => $productData['brand'],
             ]);
 
+            // ✅ 画像を保存
             ProductImage::create([
                 'product_id' => $product->id,
                 'image_path' => 'product_images/' . $productData['image'],
             ]);
+
+            // ✅ カテゴリを関連付け
+            $category = Category::where('name', $productData['category'])->first();
+            if ($category) {
+                $product->categories()->attach($category->id); // ✅ 商品とカテゴリを紐付け
+            } else {
+                $this->command->warn("カテゴリ '{$productData['category']}' が見つかりませんでした。");
+            }
         }
     }
 }

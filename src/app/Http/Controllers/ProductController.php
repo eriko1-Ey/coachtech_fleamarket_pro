@@ -98,10 +98,12 @@ class ProductController extends Controller
     //商品詳細画面を表示
     public function showDetail(Product $product)
     {
-        // 画像・カテゴリー・コメントをロード
         $product->load(['images', 'categories', 'comments.user']);
 
-        return view('detail', compact('product'));
+        // 🔹 コメントを投稿日時の新しい順で取得
+        $comments = $product->comments()->with('user')->latest()->get();
+
+        return view('detail', compact('product', 'comments'));
     }
 
     public function getLikedProducts()

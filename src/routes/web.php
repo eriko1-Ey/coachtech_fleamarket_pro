@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/mypage', [MypageController::class, 'getMypage'])->name('getMypage'); // マイページ（出品した商品一覧）
     Route::get('/purchase/{product}', [PurchaseController::class, 'showPurchase'])->name('showPurchase');
     Route::post('/purchase/{product}/complete', [PurchaseController::class, 'completePurchase'])->name('completePurchase');
+    Route::get('/mypage/edit-address', [ProfileController::class, 'editAddress'])->name('editAddress');
     Route::post('/mypage/update-address', [ProfileController::class, 'updateAddress'])->name('updateAddress');
     Route::post('/product/{product}/like', [LikeController::class, 'toggleLike'])->name('toggleLike');
     Route::post('/product/{product}/comment', [CommentController::class, 'store'])->name('addComment');

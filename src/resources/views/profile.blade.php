@@ -5,13 +5,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>プロフィール設定</title>
-    <link rel="stylesheet" href="{{asset('css/profile.css')}}" />
+    <link rel="stylesheet" href="{{asset('css/profile.css')}}?v={{ time() }}" />
     <link rel="stylesheet" href="{{asset('css/sanitize.css')}}" />
 </head>
 
 <body>
     <header class="header">
-        <img src="{{asset('storage/logo.svg')}}" alt="COACHTECHロゴ" class="logo" />
+        <a href="{{ route('index') }}">
+            <img src="{{asset('storage/logo.svg')}}" alt="COACHTECHロゴ" class="logo" />
+        </a>
         <div class="header-search">
             <input type="text" placeholder="なにをお探しですか？" />
         </div>
@@ -33,12 +35,35 @@
                     <div class="avatar">
                         <img id="avatar-preview"
                             src="{{ asset($user->profile_image ? 'storage/' . $user->profile_image : 'storage/default-avatar.png') }}"
-                            alt="プロフィール画像"
+                            alt=""
                             width="150">
                     </div>
                     <button type="button" class="avatar-btn" id="select-image-btn">画像を選択する</button>
                     <input type="file" id="profile_image" name="profile_image" accept="image/*" hidden>
                 </div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        const fileInput = document.getElementById("profile_image");
+                        const selectImageBtn = document.getElementById("select-image-btn");
+                        const avatarPreview = document.getElementById("avatar-preview");
+                        const avatarContainer = document.querySelector(".avatar");
+
+                        // ✅ 画像を選択するとプレビュー表示＆枠の色を変更
+                        fileInput.addEventListener("change", function() {
+                            if (fileInput.files && fileInput.files[0]) {
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    avatarPreview.src = e.target.result;
+                                    avatarPreview.style.display = "block"; // 画像を表示
+                                    avatarContainer.style.backgroundColor = "transparent"; // 背景を透明に
+                                };
+                                reader.readAsDataURL(fileInput.files[0]);
+                            }
+                        });
+                    });
+                </script>
+
                 <div class="form-group">
                     <label for="name" class="label">ユーザー名</label>
                     <input

@@ -5,13 +5,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>商品の出品</title>
-    <link rel="stylesheet" href="{{asset('css/sell.css')}}" />
+    <link rel="stylesheet" href="{{asset('css/sell.css')}}?v={{ time() }}" />
     <link rel="stylesheet" href="{{asset('css/sanitize.css')}}" />
 </head>
 
 <body>
     <header class="header">
-        <img src="{{asset('storage/logo.svg')}}" alt="COACHTECHロゴ" class="logo" />
+        <a href="{{ route('index') }}">
+            <img src="{{asset('storage/logo.svg')}}" alt="COACHTECHロゴ" class="logo" />
+        </a>
         <div class="header-search">
             <input type="text" placeholder="なにをお探しですか？" />
         </div>
@@ -38,7 +40,12 @@
                 <div class="form-group">
                     <label for="product-image" class="form-label">商品画像</label>
                     <div class="image-upload">
-                        <button type="button" class="upload-btn">画像を選択する</button>
+                        <div class="image-preview-container">
+                            <img id="preview-image" src="#" alt="選択された画像" style="display: none;">
+                        </div>
+                        <button type="button" class="upload-btn">
+                            <span class="upload-text">画像を選択する</span>
+                        </button>
                         <input type="file" name="product_images[]" id="product_images" multiple class="form-control" accept="image/*" style="display: none;">
                     </div>
                     <div id="selected-files" class="preview-container"></div>
@@ -46,35 +53,35 @@
                     <p class="text-danger">{{ $message }}</p>
                     @enderror
                 </div>
+
                 <script>
                     document.addEventListener("DOMContentLoaded", function() {
                         const uploadBtn = document.querySelector(".upload-btn");
                         const fileInput = document.getElementById("product_images");
-                        const selectedFiles = document.getElementById("selected-files");
+                        const previewImage = document.getElementById("preview-image");
+                        const imagePreviewContainer = document.querySelector(".image-preview-container");
 
                         // ボタンをクリックしたら file input を開く
                         uploadBtn.addEventListener("click", function() {
                             fileInput.click();
                         });
 
-                        // ファイルが選択されたら、画像を表示
+                        // ファイルが選択されたら、ボタンの横に画像を表示
                         fileInput.addEventListener("change", function() {
-                            selectedFiles.innerHTML = ""; // 一旦クリア
-
                             if (fileInput.files.length > 0) {
-                                for (let i = 0; i < fileInput.files.length; i++) {
-                                    const file = fileInput.files[i];
+                                const file = fileInput.files[0];
 
-                                    // 画像ファイルのみ処理
-                                    if (file.type.startsWith("image/")) {
-                                        const reader = new FileReader();
-                                        reader.onload = function(e) {
-                                            const img = document.createElement("img");
-                                            img.src = e.target.result;
-                                            selectedFiles.appendChild(img);
-                                        };
-                                        reader.readAsDataURL(file);
-                                    }
+                                // 画像ファイルのみ処理
+                                if (file.type.startsWith("image/")) {
+                                    const reader = new FileReader();
+                                    reader.onload = function(e) {
+                                        previewImage.src = e.target.result;
+                                        previewImage.style.display = "block";
+                                        uploadBtn.style.marginLeft = "10px"; // 画像とボタンの間に余白
+                                        imagePreviewContainer.style.display = "block";
+                                        document.querySelector(".image-upload").classList.add("has-image");
+                                    };
+                                    reader.readAsDataURL(file);
                                 }
                             }
                         });

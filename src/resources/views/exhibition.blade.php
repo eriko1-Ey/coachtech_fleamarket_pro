@@ -5,13 +5,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>商品一覧</title>
-    <link rel="stylesheet" href="{{asset('css/exhibition.css')}}" />
+    <link rel="stylesheet" href="{{asset('css/exhibition.css')}}?v={{ time() }}" />
     <link rel="stylesheet" href="{{asset('css/sanitize.css')}}" />
 </head>
 
 <body>
     <header class="header">
-        <img src="{{asset('storage/logo.svg')}}" alt="COACHTECHロゴ" class="logo" />
+        <a href="{{ route('index') }}">
+            <img src="{{asset('storage/logo.svg')}}" alt="COACHTECHロゴ" class="logo" />
+        </a>
         <div class="header-search">
             <input type="text" id="search-input" name="search" value="{{ request('search') }}" placeholder="なにをお探しですか？">
         </div>
@@ -46,29 +48,22 @@
 
 
         <div class="header-links">
-            <!-- 🔹 ログアウトボタン -->
             @auth
+            <!-- 🔹 ログイン済みユーザーはログアウトボタン -->
             <form action="{{ route('logout') }}" method="post">
                 @csrf
                 <button type="submit" class="logout-btn">ログアウト</button>
             </form>
             @else
-            <a href="{{ route('login') }}" class="logout-btn">ログアウト</a>
+            <!-- 🔹 未ログインユーザーはログインボタン -->
+            <a href="{{ route('login') }}" class="login-btn">ログイン</a>
             @endauth
 
-            <!-- 🔹 マイページボタン -->
-            @auth
-            <a href="{{ route('getMypage') }}" class="mypage-btn">マイページ</a>
-            @else
-            <a href="{{ route('login') }}" class="mypage-btn">マイページ</a>
-            @endauth
+            <!-- 🔹 マイページボタン（未ログイン時はログインページへ） -->
+            <a href="{{ auth()->check() ? route('getMypage') : route('login') }}" class="mypage-btn">マイページ</a>
 
-            <!-- 🔹 出品ボタン -->
-            @auth
-            <a href="{{ route('getSell') }}" class="header-btn">出品</a>
-            @else
-            <a href="{{ route('login') }}" class="header-btn">出品</a>
-            @endauth
+            <!-- 🔹 出品ボタン（未ログイン時はログインページへ） -->
+            <a href="{{ auth()->check() ? route('getSell') : route('login') }}" class="header-btn">出品</a>
         </div>
     </header>
 
@@ -93,15 +88,15 @@
                     <a href="{{ route('showDetail', ['product' => $product->id]) }}">
                         <div class="product-image">
                             @if ($product->images->isNotEmpty())
-                            <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" alt="商品画像" width="150">
+                            <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" alt="商品画像" width="220">
                             @else
-                            <img src="{{ asset('storage/no-image.png') }}" alt="商品画像なし" width="150">
-                            @endif
-                            @if ($product->is_sold)
-                            <div class="sold-label">SOLD</div>
+                            <img src="{{ asset('storage/no-image.png') }}" alt="商品画像なし" width="220">
                             @endif
                         </div>
                     </a>
+                    @if ($product->is_sold)
+                    <div class="sold-label">SOLD</div> <!-- ✅ 画像の下に配置 -->
+                    @endif
                     <p class="product-name">{{ $product->name }}</p>
                     <p class="product-price">¥{{ number_format($product->price) }}</p>
                 </div>

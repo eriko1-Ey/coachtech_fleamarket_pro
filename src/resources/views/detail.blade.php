@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>商品詳細</title>
-    <link rel="stylesheet" href="{{asset('css/detail.css')}}" />
+    <link rel="stylesheet" href="{{asset('css/detail.css')}}?v={{ time() }}" />
     <link rel="stylesheet" href="{{asset('css/sanitize.css')}}" />
     <style>
         /* モーダルの基本スタイル */
@@ -54,35 +54,30 @@
 
 <body>
     <header class="header">
-        <img src="{{asset('storage/logo.svg')}}" alt="COACHTECHロゴ" class="logo" />
+        <a href="{{ route('index') }}">
+            <img src="{{asset('storage/logo.svg')}}" alt="COACHTECHロゴ" class="logo" />
+        </a>
         <div class="header-search">
             <input type="text" placeholder="なにをお探しですか？" />
         </div>
 
         <div class="header-links">
-            <!-- 🔹 ログアウトボタン -->
             @auth
+            <!-- 🔹 ログイン済みユーザーはログアウトボタン -->
             <form action="{{ route('logout') }}" method="post">
                 @csrf
                 <button type="submit" class="logout-btn">ログアウト</button>
             </form>
             @else
-            <a href="{{ route('login') }}" class="logout-btn">ログアウト</a>
+            <!-- 🔹 未ログインユーザーはログインボタン -->
+            <a href="{{ route('login') }}" class="login-btn">ログイン</a>
             @endauth
 
-            <!-- 🔹 マイページボタン -->
-            @auth
-            <a href="{{ route('getMypage') }}" class="mypage-btn">マイページ</a>
-            @else
-            <a href="{{ route('login') }}" class="mypage-btn">マイページ</a>
-            @endauth
+            <!-- 🔹 マイページボタン（未ログイン時はログインページへ） -->
+            <a href="{{ auth()->check() ? route('getMypage') : route('login') }}" class="mypage-btn">マイページ</a>
 
-            <!-- 🔹 出品ボタン -->
-            @auth
-            <a href="{{ route('getSell') }}" class="header-btn">出品</a>
-            @else
-            <a href="{{ route('login') }}" class="header-btn">出品</a>
-            @endauth
+            <!-- 🔹 出品ボタン（未ログイン時はログインページへ） -->
+            <a href="{{ auth()->check() ? route('getSell') : route('login') }}" class="header-btn">出品</a>
         </div>
     </header>
 
@@ -97,7 +92,7 @@
                     @endif
 
                     @if ($product->is_sold)
-                    <p class="sold-label">SOLD</p>
+                    <div class="sold-label">SOLD</div> <!-- ✅ SOLD ラベルを統一 -->
                     @endif
                 </div>
 
@@ -108,9 +103,17 @@
                     <div class="product-actions-icons">
                         <!-- いいねボタン -->
                         <div class="like-section">
+                            @auth
                             <button class="like-button" data-product-id="{{ $product->id }}" onclick="toggleLike(this)">
+                                <img src="{{ asset(auth()->user()->likedProducts->contains($product->id) ? 'storage/liked.png' : 'storage/like.png') }}"
+                                    alt="いいねアイコン" class="action-icon" id="like-icon-{{ $product->id }}">
+                            </button>
+                            @else
+                            <!-- 未ログインユーザーはログインモーダルを表示 -->
+                            <button class="like-button" onclick="showLoginModal()">
                                 <img src="{{ asset('storage/like.png') }}" alt="いいねアイコン" class="action-icon">
                             </button>
+                            @endauth
                             <span id="like-count-{{ $product->id }}">{{ $product->likes()->count() }}</span>
                         </div>
 
@@ -122,6 +125,49 @@
                             <span id="comment-count-btn">{{ $product->comments->count() }}</span>
                         </div>
                     </div>
+
+                    <div id="loginModal" class="modal">
+                        <div class="modal-content">
+                            <p>ログインが必要です。</p>
+                            <a href="{{ route('login') }}" class="login-btn">ログインする</a>
+                            <button class="close-btn" onclick="closeLoginModal()">閉じる</button>
+                        </div>
+                    </div>
+
+                    <script>
+                        function showLoginModal() {
+                            document.getElementById('loginModal').style.display = 'flex';
+                        }
+
+                        function closeLoginModal() {
+                            document.getElementById('loginModal').style.display = 'none';
+                        }
+
+                        function toggleLike(button) {
+                            const productId = button.getAttribute('data-product-id');
+                            const likeIcon = document.getElementById(`like-icon-${productId}`);
+
+                            fetch(`/product/${productId}/like`, {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    document.getElementById(`like-count-${productId}`).textContent = data.likeCount;
+
+                                    // アイコンの変更処理
+                                    if (data.liked) {
+                                        likeIcon.src = "{{ asset('storage/liked.png') }}"; // いいねされたアイコン
+                                    } else {
+                                        likeIcon.src = "{{ asset('storage/like.png') }}"; // いいね解除のアイコン
+                                    }
+                                })
+                                .catch(error => console.error('Error:', error));
+                        }
+                    </script>
 
                     <script>
                         function toggleLike(button) {
@@ -192,10 +238,17 @@
                     <section class="comments-section">
                         <h2>コメント</h2>
                         <div id="comments-list">
-                            @foreach ($product->comments as $comment)
+                            @foreach ($comments as $comment)
                             <div class="comment">
-                                <p class="comment-user">{{ $comment->user->name }}</p>
-                                <p class="comment-text">{{ $comment->content }}</p>
+                                <!-- ✅ プロフィール画像 -->
+                                <img src="{{ $comment->user->profile_image ? asset('storage/' . $comment->user->profile_image) : asset('storage/default-avatar.png') }}"
+                                    alt="{{ $comment->user->name }}" class="comment-avatar">
+
+                                <!-- ✅ ユーザー名とコメントを縦並びに -->
+                                <div class="comment-info">
+                                    <span class="comment-user">{{ $comment->user->name }}</span>
+                                    <p class="comment-text">{{ $comment->content }}</p>
+                                </div>
                             </div>
                             @endforeach
                         </div>
@@ -206,8 +259,6 @@
                         @else
                         @auth
                         <div class="comment-form">
-                            <img src="{{ Auth::user()->profile_image ? asset('storage/' . Auth::user()->profile_image) : asset('storage/default-avatar.png') }}" alt="{{ Auth::user()->name }}" class="comment-avatar">
-                            <p class="comment-user">{{ Auth::user()->name }}</p>
                             <textarea id="comment-input" class="comment-input" placeholder="商品へのコメント"></textarea>
                             <button id="comment-submit-btn" data-product-id="{{ $product->id }}" class="comment-submit-btn">コメントを投稿する</button>
                         </div>

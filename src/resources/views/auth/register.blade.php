@@ -13,7 +13,9 @@
     <div class="container">
         <header class="header">
             <div class="header-left">
-                <img src="{{asset('storage/logo.svg')}}" alt="COACHTECHロゴ" class="logo" />
+                <a href="{{ route('index') }}">
+                    <img src="{{asset('storage/logo.svg')}}" alt="COACHTECHロゴ" class="logo" />
+                </a>
             </div>
         </header>
         <main>
