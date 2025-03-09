@@ -136,7 +136,6 @@ body {
     }
 }
 
-/* PC（1400px-1540px） */
 @media (min-width: 1400px) and (max-width: 1540px) {
     .main-title {
         font-size: 26px;

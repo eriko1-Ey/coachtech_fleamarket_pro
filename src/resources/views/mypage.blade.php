@@ -64,7 +64,7 @@
                         @endif
                     </div>
                     @if ($product->is_sold)
-                    <div class="sold-label">SOLD</div> <!-- ✅ 画像の下にSOLDを配置 -->
+                    <div class="sold-label">SOLD</div>
                     @endif
                     <p class="product-name">{{ $product->name }}</p>
                 </div>
@@ -72,7 +72,7 @@
                 @endif
             </div>
 
-            <!-- ✅ 購入した商品リスト -->
+            <!--購入した商品リスト -->
             <div id="purchased-products" class="product-list" style="display: none;">
                 @if ($purchasedProducts->isEmpty())
                 <p>まだ商品を購入していません。</p>
@@ -86,14 +86,13 @@
                         <img src="{{ asset('storage/no-image.png') }}" alt="商品画像なし" width="220">
                         @endif
                     </div>
-                    <div class="sold-label">SOLD</div> <!-- ✅ 画像の下に配置 -->
+                    <div class="sold-label">SOLD</div> <!--画像の下に配置 -->
                     <p class="product-name">{{ $purchase->product->name }}</p>
                 </div>
                 @endforeach
                 @endif
             </div>
 
-            <!-- ✅ タブ切り替え用のJavaScript -->
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
                     const tabs = document.querySelectorAll(".tab-link");
@@ -111,15 +110,14 @@
 
                             // すべてのコンテンツを非表示
                             Object.values(contents).forEach(content => {
-                                content.style.display = "none"; // ✅ 非表示にする
+                                content.style.display = "none"; //非表示にする
                             });
 
                             // クリックされたタブを active にする
                             this.classList.add("active");
 
-                            // 対応するコンテンツを表示（✅ `display: flex;` に修正）
                             const target = this.getAttribute("data-target");
-                            contents[target].style.display = "flex"; // ✅ `display: flex;` にする
+                            contents[target].style.display = "flex";
                         });
                     });
                 });

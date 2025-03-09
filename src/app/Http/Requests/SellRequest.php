@@ -29,7 +29,7 @@ class SellRequest extends FormRequest
             'price' => 'required|numeric|min:0',
             'condition' => 'required|string',
             'brand' => 'nullable|string|max:255',
-            'categories' => 'required|json', // ✅ JSON 形式でバリデーション
+            'categories' => 'required|json',
             'product_images.*' => 'image|mimes:jpeg,png|max:2048',
         ];
     }

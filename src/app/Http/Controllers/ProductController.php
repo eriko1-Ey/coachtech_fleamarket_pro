@@ -18,14 +18,13 @@ class ProductController extends Controller
     {
         $user = User::find(Auth::id());
         $showLiked = $request->query('liked', false);
-        $search = trim(preg_replace('/\s+/', ' ', $request->query('search', ''))); // 🔹 スペースを削除・統一
+        $search = trim(preg_replace('/\s+/', ' ', $request->query('search', '')));
 
-        // 🔹 キーワードを分割
         $keywords = array_filter(explode(' ', $search));
 
         if ($showLiked) {
             if (!$user) {
-                return redirect()->route('login')->with('error', 'ログインが必要です'); // 🔹 未ログインならログインページへ
+                return redirect()->route('login')->with('error', 'ログインが必要です');
             }
             $products = $user->likedProducts()->with('images')->latest()->get();
         } else {
@@ -35,7 +34,6 @@ class ProductController extends Controller
                 })
                 ->with('images');
 
-            // 🔹 複数キーワードでAND検索
             if (!empty($keywords)) {
                 $products->where(function ($query) use ($keywords) {
                     foreach ($keywords as $keyword) {
@@ -54,12 +52,12 @@ class ProductController extends Controller
     //出品画面へ遷移
     public function getSell()
     {
-        $categories = Category::all(); // データベースからすべてのカテゴリーを取得
-        return view('sell', compact('categories')); // Bladeに渡す
+        $categories = Category::all();
+        return view('sell', compact('categories'));
     }
 
     //出品商品の登録
-    public function postSell(SellRequest $request) // 修正: フォームリクエストを使用
+    public function postSell(SellRequest $request)
     {
 
         // 商品を保存
@@ -76,17 +74,16 @@ class ProductController extends Controller
         // 商品画像を保存
         if ($request->hasFile('product_images')) {
             foreach ($request->file('product_images') as $image) {
-                $path = $image->store('product_images', 'public'); // `public` に保存
+                $path = $image->store('product_images', 'public');
                 ProductImage::create([
                     'product_id' => $product->id,
-                    'image_path' => $path, // ✅ "storage/" を追加しない
+                    'image_path' => $path,
                 ]);
             }
         }
 
-        // ✅ カテゴリーの関連付けを修正（json_decode() を使用）
         if ($request->has('categories')) {
-            $categories = json_decode($request->categories, true); // ✅ JSON を配列に変換
+            $categories = json_decode($request->categories, true);
             if (is_array($categories)) {
                 $product->categories()->attach($categories);
             }
@@ -100,7 +97,6 @@ class ProductController extends Controller
     {
         $product->load(['images', 'categories', 'comments.user']);
 
-        // 🔹 コメントを投稿日時の新しい順で取得
         $comments = $product->comments()->with('user')->latest()->get();
 
         return view('detail', compact('product', 'comments'));

@@ -14,11 +14,11 @@ class ProfileController extends Controller
     //会員情報（プロフィール入力）画面を表示
     public function getProfile()
     {
-        $user = Auth::user(); // ログイン中のユーザー情報を取得
+        $user = Auth::user();
         return view('profile', compact('user'));
     }
 
-    //会員情報（プロフィール）を登録/修正
+    //会員情報
     public function postProfile(ProfileRequest $request)
     {
         $user = User::find(Auth::id());
@@ -27,7 +27,7 @@ class ProfileController extends Controller
             return redirect()->route('getProfile')->with('error', 'ユーザーが見つかりませんでした。');
         }
 
-        $validated = $request->validated(); // バリデーション済みのデータを取得
+        $validated = $request->validated();
 
         // 画像アップロード処理
         if ($request->hasFile('profile_image')) {
@@ -53,31 +53,29 @@ class ProfileController extends Controller
 
     public function editAddress(Request $request)
     {
-        $user = Auth::user(); // ✅ ログインユーザーの情報を取得
-        $product_id = $request->query('product_id'); // ✅ `GET` で `product_id` を取得
+        $user = Auth::user();
+        $product_id = $request->query('product_id');
 
-        return view('edit_address', compact('user', 'product_id')); // ✅ ビューに `product_id` を渡す
+        return view('edit_address', compact('user', 'product_id'));
     }
 
     public function updateAddress(Request $request)
     {
         $user = User::find(Auth::id());
 
-        // ✅ バリデーションを追加
         $request->validate([
             'post_code' => 'required|string|max:10',
             'address' => 'required|string|max:255',
             'building' => 'nullable|string|max:255',
         ]);
 
-        // ✅ 住所情報を更新
+        //住所情報を更新
         $user->update([
             'post_code' => $request->post_code,
             'address' => $request->address,
             'building' => $request->building,
         ]);
 
-        // ✅ `product_id` を取得し、リダイレクト時に渡す
         return redirect()->route('showPurchase', ['product' => $request->product_id])->with('success', '住所を更新しました！');
     }
 }

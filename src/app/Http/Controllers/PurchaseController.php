@@ -17,9 +17,9 @@ class PurchaseController extends Controller
             return redirect()->route('login')->with('error', '購入にはログインが必要です');
         }
 
-        $user = Auth::user(); // ✅ ログインユーザーの情報を取得
+        $user = Auth::user();
 
-        return view('purchase', compact('product', 'user')); // ✅ ビューに `$user` を渡す
+        return view('purchase', compact('product', 'user'));
     }
 
     public function completePurchase(Request $request, Product $product)

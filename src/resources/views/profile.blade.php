@@ -49,14 +49,13 @@
                         const avatarPreview = document.getElementById("avatar-preview");
                         const avatarContainer = document.querySelector(".avatar");
 
-                        // ✅ 画像を選択するとプレビュー表示＆枠の色を変更
                         fileInput.addEventListener("change", function() {
                             if (fileInput.files && fileInput.files[0]) {
                                 const reader = new FileReader();
                                 reader.onload = function(e) {
                                     avatarPreview.src = e.target.result;
-                                    avatarPreview.style.display = "block"; // 画像を表示
-                                    avatarContainer.style.backgroundColor = "transparent"; // 背景を透明に
+                                    avatarPreview.style.display = "block";
+                                    avatarContainer.style.backgroundColor = "transparent";
                                 };
                                 reader.readAsDataURL(fileInput.files[0]);
                             }
@@ -139,12 +138,10 @@
             const selectImageBtn = document.getElementById("select-image-btn");
             const avatarPreview = document.getElementById("avatar-preview");
 
-            // ✅ ボタンをクリックするとファイル選択ダイアログを開く
             selectImageBtn.addEventListener("click", function() {
                 fileInput.click();
             });
 
-            // ✅ 画像を選択するとプレビューを更新
             fileInput.addEventListener("change", function() {
                 if (fileInput.files && fileInput.files[0]) {
                     const reader = new FileReader();

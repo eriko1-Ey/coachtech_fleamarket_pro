@@ -9,7 +9,7 @@ use App\Models\Product;
 
 class CommentController extends Controller
 {
-    // ✅ コメント投稿処理
+
     public function store(Request $request, $productId)
     {
         if (!Auth::check()) {

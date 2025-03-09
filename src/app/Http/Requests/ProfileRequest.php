@@ -28,9 +28,9 @@ class ProfileRequest extends FormRequest
             'post_code' => [
                 'required',
                 'string',
-                'regex:/^\d{3}-\d{4}$/', // 🔹 000-0000 の形式のみ許可
+                'regex:/^\d{3}-\d{4}$/',
             ],
-            'address' => 'required|string|max:255', // 🔹 `required` を追加
+            'address' => 'required|string|max:255',
             'building' => 'nullable|string|max:255',
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];

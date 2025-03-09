@@ -63,20 +63,16 @@
 
         <div class="header-links">
             @auth
-            <!-- 🔹 ログイン済みユーザーはログアウトボタン -->
             <form action="{{ route('logout') }}" method="post">
                 @csrf
                 <button type="submit" class="logout-btn">ログアウト</button>
             </form>
             @else
-            <!-- 🔹 未ログインユーザーはログインボタン -->
             <a href="{{ route('login') }}" class="login-btn">ログイン</a>
             @endauth
 
-            <!-- 🔹 マイページボタン（未ログイン時はログインページへ） -->
             <a href="{{ auth()->check() ? route('getMypage') : route('login') }}" class="mypage-btn">マイページ</a>
 
-            <!-- 🔹 出品ボタン（未ログイン時はログインページへ） -->
             <a href="{{ auth()->check() ? route('getSell') : route('login') }}" class="header-btn">出品</a>
         </div>
     </header>
@@ -92,7 +88,7 @@
                     @endif
 
                     @if ($product->is_sold)
-                    <div class="sold-label">SOLD</div> <!-- ✅ SOLD ラベルを統一 -->
+                    <div class="sold-label">SOLD</div>
                     @endif
                 </div>
 
@@ -160,9 +156,9 @@
 
                                     // アイコンの変更処理
                                     if (data.liked) {
-                                        likeIcon.src = "{{ asset('storage/liked.png') }}"; // いいねされたアイコン
+                                        likeIcon.src = "{{ asset('storage/liked.png') }}";
                                     } else {
-                                        likeIcon.src = "{{ asset('storage/like.png') }}"; // いいね解除のアイコン
+                                        likeIcon.src = "{{ asset('storage/like.png') }}";
                                     }
                                 })
                                 .catch(error => console.error('Error:', error));
@@ -171,7 +167,7 @@
 
                     <script>
                         function toggleLike(button) {
-                            const productId = button.getAttribute('data-product-id'); // `data-product-id` から取得
+                            const productId = button.getAttribute('data-product-id');
 
                             fetch(`/product/${productId}/like`, {
                                     method: 'POST',
@@ -190,7 +186,6 @@
 
                     <div class="product-actions">
                         @if ($product->is_sold)
-                        <!-- 🔹 SOLD商品のボタンはグレーで無効化 -->
                         <button class="buy-now-btn disabled" disabled>購入手続きへ</button>
                         @else
                         @auth
@@ -210,7 +205,6 @@
                         </div>
                     </div>
 
-                    <!-- ✅ JavaScript 修正 -->
                     <script>
                         function showLoginModal() {
                             document.getElementById('loginModal').style.display = 'flex';
@@ -240,11 +234,9 @@
                         <div id="comments-list">
                             @foreach ($comments as $comment)
                             <div class="comment">
-                                <!-- ✅ プロフィール画像 -->
                                 <img src="{{ $comment->user->profile_image ? asset('storage/' . $comment->user->profile_image) : asset('storage/default-avatar.png') }}"
                                     alt="{{ $comment->user->name }}" class="comment-avatar">
 
-                                <!-- ✅ ユーザー名とコメントを縦並びに -->
                                 <div class="comment-info">
                                     <span class="comment-user">{{ $comment->user->name }}</span>
                                     <p class="comment-text">{{ $comment->content }}</p>
@@ -253,7 +245,6 @@
                             @endforeach
                         </div>
 
-                        <!-- ✅ コメント入力欄 -->
                         @if ($product->is_sold)
                         <button class="comment-submit-btn disabled" disabled>コメントを投稿する</button>
                         @else
@@ -307,22 +298,19 @@
                                             if (data.comment) {
                                                 const commentList = document.getElementById('comments-list');
 
-                                                // ✅ 新しいコメントだけを追加（重複防止）
                                                 const newComment = document.createElement('div');
                                                 newComment.classList.add('comment');
                                                 newComment.innerHTML = `
                         <p class="comment-text">${data.comment.content}</p>
                     `;
-                                                commentList.prepend(newComment); // 先頭に追加
+                                                commentList.prepend(newComment);
 
-                                                // ✅ コメント数を更新
                                                 const commentCount = document.getElementById('comment-count');
                                                 const commentCountBtn = document.getElementById('comment-count-btn');
                                                 const newCount = parseInt(commentCount.textContent) + 1;
                                                 commentCount.textContent = newCount;
                                                 commentCountBtn.textContent = newCount;
 
-                                                // 入力欄をクリア
                                                 document.getElementById('comment-input').value = '';
                                             }
                                         })

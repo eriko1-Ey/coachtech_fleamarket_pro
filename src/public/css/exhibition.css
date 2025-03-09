@@ -19,7 +19,6 @@ ul {
     list-style: none;
 }
 
-/* ベーススタイル */
 body {
     font-family: Arial, sans-serif;
     color: #333;
@@ -57,10 +56,9 @@ body {
 .header-links {
     display: flex;
     align-items: center;
-    gap: 15px; /* ボタン間の余白 */
+    gap: 15px;
 }
 
-/* ログアウトボタンのフォームを横並びに */
 .header-links form {
     display: inline-block;
 }
@@ -75,7 +73,6 @@ body {
     cursor: pointer;
 }
 
-/* ログアウトボタン（黒背景・白文字） */
 .logout-btn {
     background-color: transparent;
     color: #fff;
@@ -89,19 +86,16 @@ body {
     text-decoration: none;
 }
 
-/* マイページボタン（黒背景・白文字） */
 .mypage-btn {
     background-color: transparent;
     color: #fff;
 }
 
-/* 出品ボタン（白背景・黒文字） */
 .header-btn {
     background-color: #fff;
     color: #000;
 }
 
-/* ホバー時のスタイル */
 .logout-btn:hover,
 .mypage-btn:hover {
     text-decoration: underline;
@@ -111,14 +105,12 @@ body {
     background-color: #ddd;
 }
 
-/*main設定*/
 .main-container {
     max-width: 1540px;
     margin: 100px auto;
     padding: 20px;
 }
 
-/* タブメニュー */
 .tabs {
     border-bottom: 1px solid #ddd;
     background-color: #fff;
@@ -145,7 +137,7 @@ body {
 /* 商品リスト */
 .product-list {
     display: flex;
-    justify-content: flex-start; /* ✅ 左詰め */
+    justify-content: flex-start;
     flex-wrap: wrap;
     gap: 20px;
     margin: 20px;
@@ -153,8 +145,8 @@ body {
 
 .product-item {
     display: flex;
-    flex-direction: column; /* ✅ 縦方向に要素を並べる */
-    align-items: center; /* ✅ 中央揃え */
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     width: 23%;
     padding: 10px;
@@ -166,7 +158,7 @@ body {
     margin-bottom: 10px;
     font-size: 0.9em;
     color: #666;
-    position: relative; /* ✅ `SOLD` ラベルを絶対配置 */
+    position: relative;
 }
 
 .product-name {
@@ -187,28 +179,27 @@ body {
     padding: 5px 10px;
     font-size: 14px;
     border-radius: 5px;
-    display: inline-block; /* ✅ コンテンツに合わせる */
+    display: inline-block;
     text-align: center;
-    margin-top: 5px; /* ✅ 画像とSOLDの間の余白 */
+    margin-top: 5px;
 }
 
 /* レスポンシブ対応 */
 @media (min-width: 765px) and (max-width: 850px) {
     .product-item {
-        width: 48%; /* ✅ 2列で並ぶように設定 */
+        width: 48%;
     }
 }
 
-/* ✅ 765〜850px の画面幅でタブを横並びに */
 @media (min-width: 765px) and (max-width: 850px) {
     .tabs ul {
-        flex-direction: row; /* ✅ 横並びにする */
-        justify-content: center; /* ✅ 中央揃え */
-        gap: 20px; /* ✅ タブの間隔を調整 */
+        flex-direction: row;
+        justify-content: center;
+        gap: 20px;
     }
 
     .tabs ul li {
-        flex: 1; /* ✅ 均等幅にする */
+        flex: 1;
         text-align: center;
     }
 }
@@ -225,7 +216,7 @@ body {
     }
 
     .logo {
-        max-height: 22px; /* ✅ サイズを少し大きく */
+        max-height: 22px;
         margin-right: 10px;
     }
 
@@ -241,7 +232,6 @@ body {
         font-size: 14px;
     }
 
-    /* ✅ ボタン類を横並びにする */
     .header-links {
         display: flex;
         flex-direction: row;
@@ -260,14 +250,13 @@ body {
     .mypage-btn,
     .header-btn {
         width: auto;
-        min-width: 80px; /* ✅ 幅を確保 */
-        padding: 6px 12px; /* ✅ パディングを調整 */
-        font-size: 14px; /* ✅ 文字サイズを調整 */
-        white-space: nowrap; /* ✅ 折り返し防止 */
+        min-width: 80px;
+        padding: 6px 12px;
+        font-size: 14px;
+        white-space: nowrap;
     }
 
-    /* ✅ メインコンテンツのパディング調整 */
     .main {
-        padding-top: 80px; /* ✅ ヘッダーとの間隔を確保 */
+        padding-top: 80px;
     }
 }

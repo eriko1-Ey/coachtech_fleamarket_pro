@@ -37,10 +37,9 @@ body {
 .header-links {
     display: flex;
     align-items: center;
-    gap: 15px; /* ボタン間の余白 */
+    gap: 15px;
 }
 
-/* ログアウトボタンのフォームを横並びに */
 .header-links form {
     display: inline-block;
 }
@@ -55,7 +54,6 @@ body {
     cursor: pointer;
 }
 
-/* ログアウトボタン（黒背景・白文字） */
 .logout-btn {
     background-color: transparent;
     color: #fff;
@@ -69,19 +67,16 @@ body {
     text-decoration: none;
 }
 
-/* マイページボタン（黒背景・白文字） */
 .mypage-btn {
     background-color: transparent;
     color: #fff;
 }
 
-/* 出品ボタン（白背景・黒文字） */
 .header-btn {
     background-color: #fff;
     color: #000;
 }
 
-/* ホバー時のスタイル */
 .logout-btn:hover,
 .mypage-btn:hover {
     text-decoration: underline;
@@ -159,7 +154,7 @@ body {
 .like-section,
 .comment-section {
     position: relative;
-    width: 15px; /* 🔹 アイコン全体のサイズを小さく */
+    width: 15px;
     height: 15px;
     padding: 0 15px;
     display: flex;
@@ -169,7 +164,7 @@ body {
 
 /* いいね・コメントのアイコン */
 .action-icon {
-    width: 20px; /* 🔹 アイコン自体のサイズ */
+    width: 20px;
     height: 20px;
     cursor: pointer;
     transition: transform 0.2s ease;
@@ -183,9 +178,9 @@ body {
 .like-section span,
 .comment-section span {
     position: absolute;
-    bottom: -30px; /* 🔹 アイコンの下に配置 */
+    bottom: -30px;
     left: 50%;
-    transform: translateX(-50%); /* 🔹 水平方向の中央 */
+    transform: translateX(-50%);
     font-size: 12px;
     color: #333;
     font-weight: bold;
@@ -203,9 +198,9 @@ body {
     font-size: 16px;
     border-radius: 4px;
     cursor: pointer;
-    width: 100%; /* ボタンを親要素の幅に合わせる */
-    max-width: 300px; /* ボタンの最大幅を設定 */
-    margin: 0 auto; /* 中央揃え */
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
 }
 
 .buy-now-btn:hover {
@@ -218,29 +213,26 @@ body {
     margin: 24px 0;
 }
 
-/* 🛠 コメント欄全体 */
 .comments-section {
     margin: 20px 0;
     padding: 10px;
     border-radius: 5px;
 }
 
-/* 🛠 各コメントのスタイル */
-/* 🛠 コメントリストの配置を調整 */
 #comments-list {
-    margin-top: 20px; /* ✅ コメント入力欄と間隔を統一 */
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* ✅ 左揃え */
+    align-items: flex-start;
 }
 
 .comment {
     display: flex;
-    align-items: flex-start; /* ✅ アイコンとユーザー名を上揃え */
+    align-items: flex-start;
     gap: 10px;
     padding: 10px 0;
     border-bottom: 1px solid #ddd;
-    max-width: 400px; /* ✅ テキストエリアと同じ幅に */
+    max-width: 400px;
 }
 
 .comment:last-child {
@@ -252,7 +244,7 @@ body {
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
-    margin-left: 10px; /* ✅ コメント入力エリアと揃える */
+    margin-left: 10px;
 }
 
 .comment-info {
@@ -270,12 +262,12 @@ body {
 .comment-text {
     font-size: 14px;
     color: #333;
-    background-color: #f0f0f0; /* ✅ 背景色を薄いグレーに */
-    padding: 10px; /* ✅ 余白を追加 */
-    border-radius: 5px; /* ✅ 角を少し丸く */
-    width: 100%; /* ✅ 幅をボタンと統一 */
-    max-width: 400px; /* ✅ 最大幅を投稿ボタンと同じに */
-    word-wrap: break-word; /* ✅ 長い文章を折り返し */
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 400px;
+    word-wrap: break-word;
     overflow-wrap: break-word;
 }
 
@@ -287,7 +279,7 @@ body {
 
 .comment-input {
     width: 100%;
-    max-width: 400px; /* ✅ ボタンと幅を揃える */
+    max-width: 400px;
     padding: 10px;
     font-size: 14px;
     border: 1px solid #ddd;
@@ -297,7 +289,7 @@ body {
 
 .comment-submit-btn {
     width: 100%;
-    max-width: 400px; /* ✅ テキストエリアと同じ幅 */
+    max-width: 400px;
     background-color: #f95f5f;
     color: #fff;
     border: none;
@@ -319,7 +311,6 @@ body {
     margin-top: 10px;
 }
 
-/* 🔹 SOLD商品のボタンをグレーにして無効化 */
 .comment-submit-btn:disabled,
 .buy-now-btn:disabled {
     background-color: #ccc !important;
@@ -331,7 +322,6 @@ body {
 /* レスポンシブ対応 */
 /* タブレット（768px-850px） */
 @media (min-width: 768px) and (max-width: 850px) {
-    /* ✅ ヘッダー全体を横並びに */
     .header {
         display: flex;
         flex-direction: row;
@@ -343,7 +333,7 @@ body {
     }
 
     .logo {
-        max-height: 22px; /* ✅ サイズを少し大きく */
+        max-height: 22px;
         margin-right: 10px;
     }
 
@@ -377,56 +367,53 @@ body {
     .mypage-btn,
     .header-btn {
         width: auto;
-        min-width: 80px; /* ✅ 幅を確保 */
-        padding: 6px 12px; /* ✅ パディングを調整 */
-        font-size: 14px; /* ✅ 文字サイズを調整 */
-        white-space: nowrap; /* ✅ 折り返し防止 */
+        min-width: 80px;
+        padding: 6px 12px;
+        font-size: 14px;
+        white-space: nowrap;
     }
 
-    /* ✅ メインコンテンツのパディング調整 */
     .main {
-        padding: 20px; /* ✅ ヘッダーとの間隔を確保 */
+        padding: 20px;
     }
 
     .product-detail {
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 20px; /* ✅ 画像と情報セクションの間隔を統一 */
+        gap: 20px;
     }
 
     .product-image-section {
         width: 100%;
-        text-align: left; /* ✅ 画像を中央に配置 */
+        text-align: left;
     }
 
     .product-image-section img {
-        max-width: 280px; /* ✅ 画像の最大幅を設定 */
+        max-width: 280px;
         width: 100%;
         height: auto;
     }
 
     .product-info-section {
         width: 100%;
-        text-align: left; /* ✅ 商品情報を中央揃え */
+        text-align: left;
     }
 
-    /* ✅ 商品名と商品画像の間隔を調整 */
     .product-name {
         font-size: 20px;
-        margin-top: 10px; /* ✅ 画像との間隔を狭く */
+        margin-top: 10px;
     }
 
     .product-brand,
     .product-price {
         font-size: 16px;
-        margin-top: 5px; /* ✅ ブランド・価格との間隔を調整 */
+        margin-top: 5px;
     }
 
-    /* ✅ 「購入手続きへ」ボタンの幅を「コメントを投稿する」ボタンと統一 */
     .buy-now-btn {
         width: 100%;
-        max-width: 400px; /* ✅ コメントボタンと統一 */
+        max-width: 400px;
         padding: 12px;
         font-size: 16px;
         border-radius: 5px;
@@ -434,13 +421,12 @@ body {
 
     .comment-submit-btn {
         width: 100%;
-        max-width: 400px; /* ✅ 「購入手続きへ」ボタンと統一 */
+        max-width: 400px;
         padding: 12px;
         font-size: 16px;
         border-radius: 5px;
     }
 
-    /* ✅ SOLDラベルの位置を調整 */
     .sold-label {
         text-align: center;
         font-size: 18px;

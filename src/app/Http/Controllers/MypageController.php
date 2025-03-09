@@ -11,9 +11,9 @@ class MypageController extends Controller
 {
     public function getMypage()
     {
-        $user = User::find(Auth::id());  // ログインユーザー情報を取得
-        $products = $user->products()->with('images')->latest()->get(); // ユーザーの商品を取得
-        $purchasedProducts = $user->purchases()->with('product.images')->latest()->get(); // ✅ 購入した商品を取得
+        $user = User::find(Auth::id());
+        $products = $user->products()->with('images')->latest()->get();
+        $purchasedProducts = $user->purchases()->with('product.images')->latest()->get();
 
         return view('mypage', compact('user', 'products', 'purchasedProducts'));
     }

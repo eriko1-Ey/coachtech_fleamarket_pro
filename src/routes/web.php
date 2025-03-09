@@ -38,9 +38,9 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/mypage/profile', [ProfileController::class, 'getProfile'])->name('getProfile');
     Route::post('/mypage/profile', [ProfileController::class, 'postProfile'])->name('postProfile');
-    Route::get('/sell', [ProductController::class, 'getSell'])->name('getSell'); //  ここにルート名を追加; //出品画面へ遷移
-    Route::post('/sell', [ProductController::class, 'postSell']); //出品商品と登録
-    Route::get('/mypage', [MypageController::class, 'getMypage'])->name('getMypage'); // マイページ（出品した商品一覧）
+    Route::get('/sell', [ProductController::class, 'getSell'])->name('getSell');
+    Route::post('/sell', [ProductController::class, 'postSell']);
+    Route::get('/mypage', [MypageController::class, 'getMypage'])->name('getMypage');
     Route::get('/purchase/{product}', [PurchaseController::class, 'showPurchase'])->name('showPurchase');
     Route::post('/purchase/{product}/complete', [PurchaseController::class, 'completePurchase'])->name('completePurchase');
     Route::get('/mypage/edit-address', [ProfileController::class, 'editAddress'])->name('editAddress');

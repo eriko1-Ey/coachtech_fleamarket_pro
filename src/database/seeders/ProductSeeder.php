@@ -12,7 +12,7 @@ class ProductSeeder extends Seeder
 {
     public function run()
     {
-        // ✅ 仮のユーザーを取得（10人）
+        //仮のユーザーを取得（10人）
         $users = User::all();
 
         // ユーザーが存在しない場合は処理を終了
@@ -116,10 +116,10 @@ class ProductSeeder extends Seeder
         ];
 
         foreach ($products as $index => $productData) {
-            // ✅ 仮のユーザーを順番に割り当てる
+            //仮のユーザーを順番に割り当てる
             $user = $users[$index % $users->count()];
 
-            // ✅ 商品を作成
+            //商品を作成
             $product = Product::create([
                 'user_id' => $user->id,
                 'name' => $productData['name'],
@@ -130,13 +130,13 @@ class ProductSeeder extends Seeder
                 'brand' => $productData['brand'],
             ]);
 
-            // ✅ 画像を保存
+            //画像を保存
             ProductImage::create([
                 'product_id' => $product->id,
                 'image_path' => 'product_images/' . $productData['image'],
             ]);
 
-            // ✅ カテゴリを関連付け
+            //カテゴリを関連付け
             $category = Category::where('name', $productData['category'])->first();
             if ($category) {
                 $product->categories()->attach($category->id); // ✅ 商品とカテゴリを紐付け

@@ -16,17 +16,15 @@ class RegisterController extends Controller
     {
         $validated = $request->validated();
 
-        // ユーザー作成（プロフィール情報は後で登録するので省略）
+        // ユーザー作成
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
 
-        // 自動ログイン
         Auth::login($user);
 
-        // プロフィール編集ページにリダイレクト
         return redirect()->route('getProfile');
     }
 }

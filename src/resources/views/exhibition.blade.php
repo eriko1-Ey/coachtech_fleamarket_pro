@@ -23,16 +23,15 @@
                 const searchInput = document.getElementById("search-input");
 
                 searchInput.addEventListener("input", function() {
-                    const searchQuery = searchInput.value.trim(); // 🔹 スペース削除
+                    const searchQuery = searchInput.value.trim();
                     const url = new URL(window.location.href);
                     if (searchQuery) {
                         url.searchParams.set("search", searchQuery);
                     } else {
-                        url.searchParams.delete("search"); // 🔹 空なら削除
+                        url.searchParams.delete("search");
                     }
-                    window.history.replaceState({}, "", url); // 🔹 URLを変更
+                    window.history.replaceState({}, "", url);
 
-                    // 🔹 フェッチで検索結果を更新
                     fetch(url)
                         .then(response => response.text())
                         .then(html => {
@@ -49,20 +48,16 @@
 
         <div class="header-links">
             @auth
-            <!-- 🔹 ログイン済みユーザーはログアウトボタン -->
             <form action="{{ route('logout') }}" method="post">
                 @csrf
                 <button type="submit" class="logout-btn">ログアウト</button>
             </form>
             @else
-            <!-- 🔹 未ログインユーザーはログインボタン -->
             <a href="{{ route('login') }}" class="login-btn">ログイン</a>
             @endauth
 
-            <!-- 🔹 マイページボタン（未ログイン時はログインページへ） -->
             <a href="{{ auth()->check() ? route('getMypage') : route('login') }}" class="mypage-btn">マイページ</a>
 
-            <!-- 🔹 出品ボタン（未ログイン時はログインページへ） -->
             <a href="{{ auth()->check() ? route('getSell') : route('login') }}" class="header-btn">出品</a>
         </div>
     </header>
@@ -70,7 +65,6 @@
 
     <main>
         <div class="main-container">
-            <!-- タブメニュー -->
             <nav class="tabs">
                 <ul>
                     <li><a href="{{ route('index') }}" class="{{ request('liked') ? '' : 'active' }}">おすすめ</a></li>
@@ -95,7 +89,7 @@
                         </div>
                     </a>
                     @if ($product->is_sold)
-                    <div class="sold-label">SOLD</div> <!-- ✅ 画像の下に配置 -->
+                    <div class="sold-label">SOLD</div>
                     @endif
                     <p class="product-name">{{ $product->name }}</p>
                     <p class="product-price">¥{{ number_format($product->price) }}</p>

@@ -122,7 +122,7 @@
                                     this.classList.add("active");
                                 }
 
-                                selectedCategoriesInput.value = JSON.stringify(selectedCategories); // ✅ JSON 形式で送信
+                                selectedCategoriesInput.value = JSON.stringify(selectedCategories);
                             });
                         });
                     });

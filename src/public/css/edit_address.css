@@ -1,4 +1,3 @@
-/* 基本スタイル（PC優先デザイン） */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
@@ -36,10 +35,9 @@ body {
 .header-links {
     display: flex;
     align-items: center;
-    gap: 15px; /* ボタン間の余白 */
+    gap: 15px;
 }
 
-/* ログアウトボタンのフォームを横並びに */
 .header-links form {
     display: inline-block;
 }
@@ -54,26 +52,22 @@ body {
     cursor: pointer;
 }
 
-/* ログアウトボタン（黒背景・白文字） */
 .logout-btn {
     background-color: transparent;
     color: #fff;
     border: none;
 }
 
-/* マイページボタン（黒背景・白文字） */
 .mypage-btn {
     background-color: transparent;
     color: #fff;
 }
 
-/* 出品ボタン（白背景・黒文字） */
 .header-btn {
     background-color: #fff;
     color: #000;
 }
 
-/* ホバー時のスタイル */
 .logout-btn:hover,
 .mypage-btn:hover {
     text-decoration: underline;
@@ -140,7 +134,6 @@ body {
 
 /* タブレット（768px-850px） */
 @media (min-width: 768px) and (max-width: 850px) {
-    /* ✅ ヘッダー全体を横並びに */
     .header {
         display: flex;
         flex-direction: row;
@@ -151,13 +144,11 @@ body {
         width: 100%;
     }
 
-    /* ✅ ロゴのサイズ調整 */
     .logo {
-        max-height: 22px; /* ✅ サイズを少し大きく */
+        max-height: 22px;
         margin-right: 10px;
     }
 
-    /* ✅ 検索バーのサイズ調整 */
     .header-search {
         flex-grow: 1;
         margin: 0 10px;
@@ -170,7 +161,6 @@ body {
         font-size: 14px;
     }
 
-    /* ✅ ボタン類を横並びに */
     .header-links {
         display: flex;
         flex-direction: row;
@@ -189,14 +179,13 @@ body {
     .mypage-btn,
     .header-btn {
         width: auto;
-        min-width: 80px; /* ✅ 幅を確保 */
-        padding: 6px 12px; /* ✅ パディングを調整 */
-        font-size: 14px; /* ✅ 文字サイズを調整 */
-        white-space: nowrap; /* ✅ 折り返し防止 */
+        min-width: 80px;
+        padding: 6px 12px;
+        font-size: 14px;
+        white-space: nowrap;
     }
 
-    /* ✅ メインコンテンツのパディング調整 */
     .main {
-        padding-top: 80px; /* ✅ ヘッダーとの間隔を確保 */
+        padding-top: 80px;
     }
 }
