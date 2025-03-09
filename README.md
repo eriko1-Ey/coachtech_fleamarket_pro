@@ -44,6 +44,11 @@ mysql:
   unlink storage
   ln -s ../storage/app/public storage
 
+【ER図】
+
+
+
+  
 【使用技術(実行環境)】
 ・php 8.0 ・laravel 8 ・MySQL 8.0
 
