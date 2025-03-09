@@ -17,7 +17,7 @@ mysql:
     
 【Laravel環境構築】
 
-1.　docker　compose exec php bashを実行する。
+1.　docker compose exec php bashを実行する。
 2.　composer installを実行する。
 3.　cp .env.example .envを実行する。（実行後、exitでphpコンテナを抜ける）
 4.　.envに以下の環境変数に編集する。
