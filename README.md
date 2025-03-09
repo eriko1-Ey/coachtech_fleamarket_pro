@@ -4,7 +4,7 @@ COACHTECH FLEAMARKET
 
 1.　git clone git@github.com:eriko1-Ey/coachtech_fleamarket.gitを実行する。
 2.　DockerDesktopアプリを立ち上げる。
-3.　docker　compose up -d --build
+3.　docker compose up -d --build
 　　※現在のdocker-compose.ymlは編集済みではある。
   　※MacのM1・M2チップのPCの場合、no matching manifest for linux/arm64/v8 in the manifest list entriesの
   　メッセージが表示されビルドができないことがある。
