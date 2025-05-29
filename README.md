@@ -4,7 +4,10 @@
 
 ### Docker Build
 
-1.　git clone git@github.com:eriko1-Ey/coachtech_fleamarket.gitを実行する。
+1.　コードをcloneする。
+```
+git clone git@github.com:eriko1-Ey/coachtech_fleamarket_pro.gitを実行する。
+```
 2.　DockerDesktopアプリを立ち上げる。
 3.　docker compose up -d --build
 　　※現在のdocker-compose.ymlは編集済みではある。
