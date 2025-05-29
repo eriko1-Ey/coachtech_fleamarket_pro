@@ -96,7 +96,7 @@ ln -s ../storage/app/public storage
 【ER図】
 
 
-![Image](https://github.com/user-attachments/assets/86156d6a-1b47-4cbb-aa52-2d73d1ea355e)
+![Image](https://github.com/user-attachments/assets/a80e430c-d1da-46f8-9ff5-c6f812cee829)
 
 
   
