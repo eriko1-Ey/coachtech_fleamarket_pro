@@ -21,35 +21,79 @@ git clone git@github.com:eriko1-Ey/coachtech_fleamarket_pro.gitを実行する�
 ```
 platform: linux/x86_64
 ```
-    
-【Laravel環境構築】
 
-1.　docker compose exec php bashを実行する。
-2.　composer installを実行する。
-3.　cp .env.example .envを実行する。（実行後、exitでphpコンテナを抜ける）
-4.　.envに以下の環境変数に編集する。
-　　　DB_CONNECTION=mysql
-　　　DB_HOST=mysql
-　　　DB_PORT=3306
-　　　DB_DATABASE=laravel_db
-　　　DB_USERNAME=laravel_user
-　　　DB_PASSWORD=laravel_pass
-   
-5.　アプリケーションキーの作成(phpコンテナ内）
-　　php artisan key:generate
-  
-6.　マイグレーションの実行(phpコンテナ内）
-　　php artisan migrate
-  
-7.　シーディングの実行(phpコンテナ内）
-　　php artisan db:seed
+    
+### Laravel環境構築
+
+1.  phpコンテナを実行する。
+
+```
+docker compose exec php bash
+```
+
+2.　 Laravelのパッケージをインストールする。
+
+```
+composer install
+```
+
+3.　 .envファイルを作成する。
+
+```
+cp .env.example .env
+```
+
+4.　.env に以下の環境変数に編集する。
+
+```
+DB_CONNECTION=mysql
+
+DB_HOST=mysql
+
+DB_PORT=3306
+
+DB_DATABASE=laravel_db
+
+DB_USERNAME=laravel_user
+
+DB_PASSWORD=laravel_pass
+```
+
+5.　アプリケーションキーの作成(php コンテナ内）
+
+```
+php artisan key:generate
+```
+
+6.　マイグレーションの実行(php コンテナ内）
+
+```
+php artisan migrate
+```
+
+7.　シーディングの実行(php コンテナ内）
+
+```
+php artisan db:seed
+```
+※admin → メールアドレス　admin@example.com パスワード　　 admin123
+
+一般ユーザー　 → 各ユーザーのメールアドレス　　パスワード　 password
 
 8.　シンボリックリンクの作成
-　　php artisan storage/link
-  ※失敗した場合は、下記を実行する。
-  cd src/publilc
-  unlink storage
-  ln -s ../storage/app/public storage
+
+```
+php artisan storage/link
+```
+
+※失敗した場合は、下記を実行する。
+```
+cd src/publilc
+
+unlink storage
+
+ln -s ../storage/app/public storage
+```
 
 【ER図】
 
