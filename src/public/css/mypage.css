@@ -310,6 +310,13 @@ body {
     }
 }
 
+/*評価*/
+.rating {
+    font-size: 18px;
+    color: gold;
+    margin-top: 5px;
+}
+
 @media (min-width: 765px) and (max-width: 850px) {
     .profile {
         display: flex;

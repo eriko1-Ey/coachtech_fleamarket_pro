@@ -8,6 +8,9 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,5 +50,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/mypage/update-address', [ProfileController::class, 'updateAddress'])->name('updateAddress');
     Route::post('/product/{product}/like', [LikeController::class, 'toggleLike'])->name('toggleLike');
     Route::post('/product/{product}/comment', [CommentController::class, 'store'])->name('addComment');
+    Route::get('/mypage', [MypageController::class, 'getMypage'])->name('getMypage'); // マイページに「取引中の商品」タブ付き
+    //Route::get('/chat/{chat}', [MypageController::class, 'showChat'])->name('showChat'); // チャット画面に遷移
+    Route::get('/chat/{chat}', [ChatController::class, 'show'])->name('showChat');
+    Route::post('/chat/{chat}/message', [MessageController::class, 'store'])->name('sendMessage');
+    Route::put('/message/{message}/update', [MessageController::class, 'update'])->name('updateMessage');
+    Route::delete('/message/{message}/delete', [MessageController::class, 'destroy'])->name('deleteMessage');
+    Route::post('/chat/{chat}/complete', [ChatController::class, 'completeTransaction'])->name('completeTransaction');
+    Route::post('/chat/{chat}/review', [ReviewController::class, 'store'])->name('submitReview');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });

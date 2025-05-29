@@ -37,7 +37,20 @@
                 </div>
                 <div class="profile-details">
                     <p class="username">{{ $user->name }}</p>
+                    <p class="rating">
+                        @php
+                        $average = round($user->averageRating());
+                        @endphp
+                        @for ($i = 1; $i <= 5; $i++)
+                            <span>{{ $i <= $average ? '★' : '☆' }}</span>
+                            @endfor
+                    </p>
                     <a href="{{ route('getProfile') }}" class="edit-profile-btn">プロフィールを編集</a>
+                    @php
+                    $average = \App\Models\Review::where('reviewee_id', $user->id)->avg('rating');
+                    @endphp
+
+
                 </div>
             </div>
 
@@ -46,6 +59,14 @@
                 <ul>
                     <li><a href="#" class="tab-link active" data-target="sold-products">出品した商品</a></li>
                     <li><a href="#" class="tab-link" data-target="purchased-products">購入した商品</a></li>
+                    <li>
+                        <a href="#" class="tab-link" data-target="active-products">
+                            取引中の商品
+                            @if ($unreadMessagesByChat->flatten()->count() > 0)
+                            <span class="badge">{{ $unreadMessagesByChat->flatten()->count() }}</span>
+                            @endif
+                        </a>
+                    </li>
                 </ul>
             </nav>
 
@@ -93,12 +114,40 @@
                 @endif
             </div>
 
+            <!--取引中の商品リスト-->
+            <div id="active-products" class="product-list" style="display: none;">
+
+                @if ($activeChats->isEmpty())
+                <p>取引中の商品はありません。</p>
+                @else
+                @foreach ($activeChats->sortByDesc('created_at') as $chat)
+                @php
+                $chatUnreadCount = isset($unreadMessagesByChat[$chat->id]) ? $unreadMessagesByChat[$chat->id]->count() : 0;
+                @endphp
+                <div class="product-item">
+                    <a href="{{ route('showChat', $chat->id) }}">
+                        <div class="product-image">
+                            @if ($chatUnreadCount > 0)
+                            <div class="chat-badge">{{ $chatUnreadCount }}</div>
+                            @endif
+                            <img src="{{ asset('storage/' . optional($chat->product->images->first())->image_path ?? 'no-image.png') }}" alt="商品画像" width="220">
+                        </div>
+                    </a>
+                    <p class="product-name">{{ $chat->product->name }}</p>
+                </div>
+                @endforeach
+                @endif
+            </div>
+
+
+
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
                     const tabs = document.querySelectorAll(".tab-link");
                     const contents = {
                         "sold-products": document.getElementById("sold-products"),
-                        "purchased-products": document.getElementById("purchased-products")
+                        "purchased-products": document.getElementById("purchased-products"),
+                        "active-products": document.getElementById("active-products")
                     };
 
                     tabs.forEach(tab => {

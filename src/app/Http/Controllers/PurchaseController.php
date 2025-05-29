@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Product;
 use App\Models\Purchase;
 use App\Models\User;
+use App\Models\Chat;
 
 class PurchaseController extends Controller
 {
@@ -35,6 +36,20 @@ class PurchaseController extends Controller
 
         // 商品のステータスをSOLDに変更
         $product->update(['is_sold' => true]);
+
+        // チャット情報を保存（重複防止も考慮）
+        $existingChat = Chat::where('product_id', $product->id)
+            ->where('buyer_id', $user->id)
+            ->first();
+
+        if (!$existingChat) {
+            Chat::create([
+                'product_id' => $product->id,
+                'buyer_id' => $user->id,
+                'seller_id' => $product->user_id, // 出品者ID
+                'is_finished' => false,
+            ]);
+        }
 
         return redirect()->route('getMypage')->with('success', '購入が完了しました！');
     }
