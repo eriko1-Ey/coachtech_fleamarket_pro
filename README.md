@@ -1,6 +1,8 @@
 # COACHTECH FLEAMARKET
 
-【Dockerビルド】
+## 環境構築
+
+### Docker Build
 
 1.　git clone git@github.com:eriko1-Ey/coachtech_fleamarket.gitを実行する。
 2.　DockerDesktopアプリを立ち上げる。
