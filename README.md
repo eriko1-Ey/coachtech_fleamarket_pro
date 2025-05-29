@@ -8,17 +8,19 @@
 ```
 git clone git@github.com:eriko1-Ey/coachtech_fleamarket_pro.gitを実行する。
 ```
-2.　DockerDesktopアプリを立ち上げる。
-3.　docker compose up -d --build
-　　※現在のdocker-compose.ymlは編集済みではある。
-  　※MacのM1・M2チップのPCの場合、no matching manifest for linux/arm64/v8 in the manifest list entriesの
-  　メッセージが表示されビルドができないことがある。
-   エラーが発生する場合は、docker-compose.ymlファイルの「mysql」内に「platform」の項目を追加で記載してください。
 
-mysql:
-    platform: linux/x86_64　(この文を追加する)
-    image: mysql:8.0.26
-    environment:
+2.　 docker を起動する。
+```
+ docker compose up -d --build
+```
+
+※Mac の M1・M2 チップの PC の場合、no matching manifest for linux/arm64/v8 in the manifest list entries の
+　メッセージが表示されビルドができないことがある。
+エラーが発生する場合は、docker-compose.yml ファイルの「mysql」内に以下のような項目を追加してください。
+
+```
+platform: linux/x86_64
+```
     
 【Laravel環境構築】
 
