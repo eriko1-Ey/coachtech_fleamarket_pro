@@ -76,9 +76,6 @@ php artisan migrate
 ```
 php artisan db:seed
 ```
-※admin → メールアドレス　admin@example.com パスワード　　 admin123
-
-一般ユーザー　 → 各ユーザーのメールアドレス　　パスワード　 password
 
 8.　シンボリックリンクの作成
 
