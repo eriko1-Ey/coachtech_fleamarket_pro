@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Review extends Model
 {
-    protected $fillable = ['chat_id', 'reviewer_id', 'reviewee_id', 'rating', 'comment'];
+    protected $fillable = ['chat_id', 'reviewer_id', 'reviewee_id', 'rating', 'comment', 'is_read',];
 
     public function chat()
     {

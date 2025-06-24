@@ -6,6 +6,7 @@
     <title>取引チャット</title>
     <link rel="stylesheet" href="{{asset('css/chat.css')}}?v={{ time() }}" />
     <link rel="stylesheet" href="{{asset('css/sanitize.css')}}" />
+    <script src="{{ asset('js/chat.js') }}?v={{ time() }}"></script>
 </head>
 
 <body>
@@ -59,11 +60,13 @@
                     </form>
                     @endif
 
-                    <!-- 出品者の評価送信ボタン -->
+                    <!-- 出品者の評価送信ボタン-->
                     @if ($isSeller && $buyerHasReviewed && !$sellerHasReviewed)
                     <button type="button" class="complete-button"
                         onclick="openModal('{{ route('submitReview', $chat->id) }}')">評価を送る</button>
                     @endif
+
+
 
                 </div>
 
@@ -88,28 +91,17 @@
                     </form>
                 </div>
 
-                <!--モーダル開く関数 -->
-                <script>
-                    function openModal(actionUrl) {
-                        const modal = document.getElementById('reviewModal');
-                        const form = document.getElementById('reviewForm');
-                        form.action = actionUrl;
-                        modal.style.display = 'flex';
-                    }
-
-                    // 背景クリックでモーダル閉じる
-                    window.addEventListener('click', function(e) {
-                        if (e.target.classList.contains('modal')) {
-                            e.target.style.display = 'none';
-                        }
-                    });
-                </script>
-
                 <!-- 商品情報 -->
                 <div class="product-info">
                     <div class="product-image">
                         @if ($chat->product->images->isNotEmpty())
-                        <img src="{{ asset('storage/' . $chat->product->images->first()->image_path) }}" alt="商品画像" width="100">
+                        <img src="{{ asset('storage/' . $chat->product->images->first()->image_path) }}"
+                            alt="商品画像"
+                            width="100"
+                            @if ($isSeller && $buyerHasReviewed && !$sellerHasReviewed)
+                            onclick="openModal('{{ route('submitReview', $chat->id) }}')"
+                            style="cursor: pointer;"
+                            @endif>
                         @endif
                     </div>
                     <div class="product-details">
@@ -119,107 +111,108 @@
                 </div>
 
                 <!-- チャットメッセージ一覧 -->
-                <div class="messages">
-                    @foreach ($messages as $message)
+                @foreach ($messages as $message)
+                <div class="message-wrapper {{ $message->user_id === Auth::id() ? 'self' : 'other' }}">
                     <div class="{{ $message->user_id === Auth::id() ? 'message-self' : 'message-other' }}">
                         <div class="message-meta">
                             <img src="{{ asset($message->user->profile_image ? 'storage/' . $message->user->profile_image : 'storage/default-avatar.png') }}" class="profile-img">
                             <span class="user-name">{{ $message->user->name }}</span>
                         </div>
+                        <div class="bubble">
+                            @if ($message->content)
+                            <p class="message-content">{{ $message->content }}</p>
+                            @endif
 
-                        @if ($message->content)
-                        <p class="message-content">{{ $message->content }}</p>
-                        @endif
+                            @if ($message->image_path)
+                            <div class="chat-image">
+                                <img src="{{ asset('storage/' . $message->image_path) }}" alt="画像" />
+                            </div>
+                            @endif
 
+                            <small>{{ $message->created_at->format('H:i') }}</small>
+                        </div>
 
-                        @if ($message->image_path)
-                        <div class="chat-image">
-                            <img src="{{ asset('storage/' . $message->image_path) }}" alt="添付画像" width="150">
+                        @if ($message->user_id === Auth::id())
+                        <div class="actions">
+                            <span class="edit-link"
+                                data-id="{{ $message->id }}"
+                                data-content="{{ $message->content }}"
+                                onclick="openEditModal(this)">編集</span>
+                            <span class="delete-link"
+                                data-id="{{ $message->id }}"
+                                onclick="openDeleteModal(this)">削除</span>
                         </div>
                         @endif
-
-                        <small>{{ $message->created_at->format('H:i') }}</small>
                     </div>
-                    @endforeach
                 </div>
-
-        </div>
-
-        <!-- 入力フォーム -->
-        <div class="input-area">
-            <form action="{{ route('sendMessage', $chat->id) }}" method="POST" enctype="multipart/form-data" class="input-form">
-                @csrf
-                <input type="text" name="content" placeholder="メッセージを記入してください" required class="message-input" />
-                <div style="color:red">
-                    @error('content')
-                    {{ $message }}
-                    @enderror
-                </div>
-                <input type="file" name="image" class="file-input" />
-                <div style="color:red">
-                    @error('image')
-                    {{ $message }}
-                    @enderror
-                </div>
-                <button type="submit" class="send-button">📩</button>
-            </form>
-        </div>
-        <!-- 編集モーダル -->
-        <div id="editModal" class="modal" style="display: none;">
-            <form method="POST" id="editForm">
-                @csrf
-                @method('PUT')
-                <textarea name="content" id="editMessageContent" rows="4" cols="40"></textarea>
-                <button type="submit">保存</button>
-            </form>
+                @endforeach
         </div>
 
-        <!-- 削除モーダル -->
-        <div id="deleteModal" class="modal" style="display: none;">
-            <form method="POST" id="deleteForm">
-                @csrf
-                @method('DELETE')
-                <p>本当に削除しますか？</p>
-                <button type="submit">はい</button>
-            </form>
-        </div>
-        </section>
+    </div>
+
+
+    <!-- 編集モーダル -->
+    <div id="editModal" class="modal" style="display: none;">
+        <form method="POST" id="editForm" class="modal-content">
+            @csrf
+            @method('PUT')
+            <textarea name="content" id="editMessageContent" rows="4"></textarea>
+            <button type="submit">保存</button>
+        </form>
+    </div>
+
+    <!-- 削除モーダル -->
+    <div id="deleteModal" class="modal" style="display: none;">
+        <form method="POST" id="deleteForm">
+            @csrf
+            @method('DELETE')
+            <p>本当に削除しますか？</p>
+            <button type="submit">はい</button>
+        </form>
+    </div>
+
+
+    </section>
+    </div>
+    <!-- 入力フォーム -->
+    <div class="input-area">
+        <form action="{{ route('sendMessage', $chat->id) }}" method="POST" enctype="multipart/form-data" class="input-form">
+            @csrf
+            <input type="text" id="chatInput" name="content" placeholder="メッセージを記入してください" required class="message-input" data-chat-id="{{ $chat->id }}" />
+            <div style="color:red">
+                @error('content')
+                {{ $message }}
+                @enderror
+            </div>
+            <input type="file" name="image" class="file-input" />
+            <div style="color:red">
+                @error('image')
+                {{ $message }}
+                @enderror
+            </div>
+            <button type="submit" class="send-button">📩</button>
+        </form>
     </div>
     </div>
+
+    <!--
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // 編集ボタン
-            document.querySelectorAll('.edit-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const messageId = this.dataset.id;
-                    const form = document.querySelector('#editModal form');
-                    form.action = `/message/${messageId}/update`;
-                    document.getElementById('editModal').style.display = 'flex';
-                });
-            });
+        function openModal(url) {
+            const modal = document.getElementById('reviewModal');
+            const form = document.getElementById('reviewForm');
+            form.action = url;
+            modal.style.display = 'block';
+        }
 
-            // 削除ボタン
-            document.querySelectorAll('.delete-link').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const messageId = this.dataset.id;
-                    const form = document.querySelector('#deleteModal form');
-                    form.action = `/message/${messageId}/delete`;
-                    document.getElementById('deleteModal').style.display = 'flex';
-                });
-            });
 
-            // モーダルを閉じる（背景クリックで閉じるなども後で追加可能）
-            window.addEventListener('click', function(e) {
-                if (e.target.classList.contains('modal')) {
-                    e.target.style.display = 'none';
-                }
-            });
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('reviewModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
         });
     </script>
-
-
+-->
 </body>
 
 </html>

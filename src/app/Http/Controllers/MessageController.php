@@ -19,9 +19,9 @@ class MessageController extends Controller
 
         // メッセージ作成用データ
         $data = [
-            'chat_id' => $chat->id,
-            'user_id' => $user->id,
-            'content' => $request->input('content'),
+            'chat_id' => $chat->id, //どのチャットに属するメッセージなのか
+            'user_id' => $user->id, //誰が送ったメッセージなのか
+            'content' => $request->input('content'), //本文
         ];
 
         // 画像がアップロードされている場合
@@ -36,9 +36,9 @@ class MessageController extends Controller
         // リレーションの読み込み
         $message->load('user');
 
-        // 通知メール送信（Mailhog / Mailtrap）
-        $receiver = $chat->buyer_id === $user->id ? $chat->seller : $chat->buyer;
-        Mail::to($receiver->email)->send(new \App\Mail\NewChatMessage($message));
+        // 通知メール送信（Mailhog / Mailtrap）_メッセージ毎に通知メールを送信しないため、コメントアウトとする。
+        //$receiver = $chat->buyer_id === $user->id ? $chat->seller : $chat->buyer; //メッセージを送る相手（受信者）を判断
+        //Mail::to($receiver->email)->send(new \App\Mail\NewChatMessage($message));
 
         return redirect()->route('showChat', $chat->id);
     }
@@ -61,6 +61,10 @@ class MessageController extends Controller
     public function destroy(Request $request, Message $message)
     {
         $this->authorize('delete', $message);
+
+        if ($message->image_path && \Storage::disk('public')->exists($message->image_path)) {
+            \Storage::disk('public')->delete($message->image_path);
+        }
 
         $message->delete();
 

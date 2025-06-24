@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
             'post_code' => sprintf("%07d", rand(1000000, 9999999)),
             'address' => '東京都渋谷区2-丁目',
             'building' => 'マンション2',
-            'profile_image' => 'profile_images/IMG_1735.jpg',
+            'profile_image' => 'profile_images/IMG_1735.jpeg',
         ]);
 
         User::create([

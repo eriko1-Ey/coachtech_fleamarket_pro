@@ -24,7 +24,7 @@ class ProfileController extends Controller
         $user = User::find(Auth::id());
 
         if (!$user) {
-            return redirect()->route('getProfile')->with('error', 'ユーザーが見つかりませんでした。');
+            return redirect()->route('getProfile');
         }
 
         $validated = $request->validated();
@@ -48,7 +48,7 @@ class ProfileController extends Controller
             'profile_image' => $imagePath,
         ]);
 
-        return redirect()->route('index')->with('success', 'プロフィールを更新しました！');
+        return redirect()->route('index');
     }
 
     public function editAddress(Request $request)

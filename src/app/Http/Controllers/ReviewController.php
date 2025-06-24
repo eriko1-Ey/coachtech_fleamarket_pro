@@ -23,7 +23,7 @@ class ReviewController extends Controller
 
 
         // 相手ユーザーの取得
-        $revieweeId = ($chat->buyer_id === $user->id) ? $chat->seller_id : $chat->buyer_id;
+        $revieweeId = ($chat->buyer_id === $user->id) ? $chat->seller_id : $chat->buyer_id; //レビュー対象者の判断
 
         Review::create([
             'chat_id' => $chat->id,

@@ -37,6 +37,11 @@ class ChatController extends Controller
             ->where('is_read', false)
             ->update(['is_read' => true]);
 
+        Review::where('chat_id', $chat->id)
+            ->where('reviewee_id', $user->id)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+
         return view('chat', compact('chat', 'messages', 'activeChats'));
     }
 

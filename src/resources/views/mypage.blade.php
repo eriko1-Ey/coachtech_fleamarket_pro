@@ -62,8 +62,8 @@
                     <li>
                         <a href="#" class="tab-link" data-target="active-products">
                             取引中の商品
-                            @if ($unreadMessagesByChat->flatten()->count() > 0)
-                            <span class="badge">{{ $unreadMessagesByChat->flatten()->count() }}</span>
+                            @if ($unreadTotal > 0)
+                            <span class="badge">{{ $unreadTotal }}</span>
                             @endif
                         </a>
                     </li>
@@ -122,24 +122,45 @@
                 @else
                 @foreach ($activeChats->sortByDesc('created_at') as $chat)
                 @php
-                $chatUnreadCount = isset($unreadMessagesByChat[$chat->id]) ? $unreadMessagesByChat[$chat->id]->count() : 0;
+                $msgCnt = isset($unreadMessagesByChat[$chat->id]) ? $unreadMessagesByChat[$chat->id]->count() : 0;
+                $revCnt = isset($unreadReviewsByChat[$chat->id]) ? $unreadReviewsByChat[$chat->id]->count() : 0;
+                $badgeCnt = $msgCnt + $revCnt;
+
+                $hasUserReviewed = in_array($chat->id, $reviewedChatIds);
+
+                $hasBeenReviewed = \App\Models\Review::where('chat_id', $chat->id)
+                ->where('reviewee_id', Auth::id())
+                ->exists();
                 @endphp
+
                 <div class="product-item">
-                    <a href="{{ route('showChat', $chat->id) }}">
-                        <div class="product-image">
-                            @if ($chatUnreadCount > 0)
-                            <div class="chat-badge">{{ $chatUnreadCount }}</div>
-                            @endif
-                            <img src="{{ asset('storage/' . optional($chat->product->images->first())->image_path ?? 'no-image.png') }}" alt="商品画像" width="220">
-                        </div>
-                    </a>
+                    <div class="product-image">
+                        @if ($badgeCnt > 0)
+                        <div class="chat-badge">{{ $badgeCnt }}</div>
+                        @endif
+
+                        <img
+                            src="{{ asset('storage/'.optional($chat->product->images->first())->image_path ?? 'no-image.png') }}"
+                            width="220"
+                            style="cursor:pointer;"
+                            onclick="handleImageClick(
+                    {{ Auth::id() === $chat->seller_id ? 'true' : 'false' }},
+                    {{ $chat->buyer_reviewed  ? 'true' : 'false' }},
+                    {{ $chat->seller_reviewed ? 'true' : 'false' }},
+                    '{{ route('submitReview', ['chat'=>$chat->id]) }}',
+                    '{{ route('showChat', $chat->id) }}'
+                )">
+                    </div>
+
+                    @if ($chat->is_finished && $hasUserReviewed)
+                    <p class="completed-label">取引完了</p>
+                    @endif
+
                     <p class="product-name">{{ $chat->product->name }}</p>
                 </div>
                 @endforeach
                 @endif
             </div>
-
-
 
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
@@ -173,6 +194,63 @@
             </script>
         </div>
     </main>
+
+
+    <!-- 評価モーダル -->
+    <!-- 評価モーダル -->
+    <div id="reviewModal" class="modal" style="display: none;">
+        <form method="POST" id="reviewForm">
+            @csrf
+            <div class="modal-content">
+                <h3>取引が完了しました</h3>
+                <p>今回の取引相手はどうでしたか？</p>
+
+                <div class="star-rating">
+                    @for ($i = 5; $i >= 1; $i--)
+                    <input type="radio" id="star{{ $i }}" name="rating" value="{{ $i }}" required>
+                    <label for="star{{ $i }}">★</label>
+                    @endfor
+                </div>
+
+                <button type="submit" class="submit-review">送信</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        function openModal(actionUrl) {
+            const modal = document.getElementById('reviewModal');
+            const form = document.getElementById('reviewForm');
+            form.action = actionUrl;
+            modal.style.display = 'flex';
+        }
+
+        /**
+         * 画像クリック時の分岐
+         * @param {Boolean} isSeller        今クリックした人が出品者か
+         * @param {Boolean} buyerReviewed   買い手がすでに評価したか
+         * @param {Boolean} sellerReviewed  売り手がすでに評価したか
+         * @param {String}  reviewUrl       モーダル送信先
+         * @param {String}  chatUrl         通常遷移先
+         */
+        function handleImageClick(isSeller, buyerReviewed, sellerReviewed, reviewUrl, chatUrl) {
+            // 売り手で、買い手が評価済み、かつ自分は未評価 → モーダル
+            if (isSeller && buyerReviewed && !sellerReviewed) {
+                openModal(reviewUrl);
+            } else {
+                // それ以外はチャット画面
+                window.location.href = chatUrl;
+            }
+        }
+
+        /* 背景クリックでモーダルを閉じる */
+        window.addEventListener('click', e => {
+            if (e.target.id === 'reviewModal') {
+                e.target.style.display = 'none';
+            }
+        });
+    </script>
 </body>
+
+
 
 </html>
