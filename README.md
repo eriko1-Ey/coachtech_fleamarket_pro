@@ -81,7 +81,7 @@ php artisan db:seed
 8.　シンボリックリンクの作成
 
 ```
-php artisan storage/link
+php artisan storage:link
 ```
 
 ※失敗した場合は、下記を実行する。
